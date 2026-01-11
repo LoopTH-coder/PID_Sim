@@ -4,7 +4,7 @@ PID
 
 @author: LoopTH_coder
 """
-import numpy as np
+
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio
@@ -58,7 +58,7 @@ for i in range(0, round(e_time/st_time)):
                                        st_time, s_point,
                                        c_pv, er_last,
                                        p_integ, _integ_max, _integ_min)
-    # c_pv += cntrl_out * (1 - np.exp(-st_time/5.0))
+    
     c_pv += (st_time/5.0) * (cntrl_out - c_pv)
     # Step change
     if _t >= 50:
@@ -75,8 +75,8 @@ for i in range(0, round(e_time/st_time)):
 # %% Plots
 fig = px.scatter()
 
-fig1 = go.Scatter(x=t, y=process_v, name = "Control Output")
-fig2 = go.Scatter(x=t, y=s_p,  name="Setpoint")
+fig1 = go.Scatter(x=t, y=process_v, name= "Control Output")
+fig2 = go.Scatter(x=t, y=s_p,  name= "Setpoint")
 
 fig.add_trace(fig1)
 fig.add_trace(fig2)
