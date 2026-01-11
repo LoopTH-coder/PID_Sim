@@ -2,7 +2,7 @@
 """
 PID
 
-@author: niazz
+@author: LoopTH_coder
 """
 import numpy as np
 import plotly.express as px
@@ -11,14 +11,14 @@ import plotly.io as pio
 pio.renderers.default='browser'
 
 # %% Functions 
-def pid(Kp, Ki, Kd, dt, sp, pv, lstpas_er, integ, integ_max):
+def pid(Kp, Ki, Kd, dt, sp, pv, lstpas_er, integ, integ_max, integ_min):
     # Error
     er = sp - pv
     # Integral
     if integ > integ_max:
         integ = integ_max
-    elif integ < 0:
-        integ = 0.0
+    elif integ < integ_min:
+        integ = integ_min
     else:
         integ += er * dt
     # Derivative 
@@ -32,12 +32,12 @@ e_time = 180.0
 _t = 0.0
 
 # %% PID Setup
-s_point = 0.0
-_Kp = 25.0
-_Ki = 0.1
-_Kd = 0.5
-_integ_max = 1
-
+s_point = 1.0
+_Kp = 0.8
+_Ki = 0.5
+_Kd = 0.3
+_integ_max = 2
+_integ_min = -2
 # %% Last Pass
 er_last = 0.0
 c_pv = 0.0
@@ -57,11 +57,12 @@ for i in range(0, round(e_time/st_time)):
     cntrl_out, er_out, integ_out = pid(_Kp, _Ki, _Kd,
                                        st_time, s_point,
                                        c_pv, er_last,
-                                       p_integ, _integ_max)
-    c_pv += cntrl_out * (1 - np.exp(-st_time/5.0))
+                                       p_integ, _integ_max, _integ_min)
+    # c_pv += cntrl_out * (1 - np.exp(-st_time/5.0))
+    c_pv += (st_time/5.0) * (cntrl_out - c_pv)
     # Step change
-    if _t >= 30:
-        s_point = 1
+    if _t >= 50:
+        s_point = -1.0
     
     t.append(_t)
     er_last = er_out
