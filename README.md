@@ -8,4 +8,4 @@ This repository contains an implementation of a PID controller along with a test
 * A realistic first-order process simulation with lag
 * Visualization of system response over time
 
-The solution is designed to run on Windows and follows good software practices.
+The solution is designed to run on Windows.
